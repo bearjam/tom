@@ -1,18 +1,15 @@
-import React, { FC, HTMLAttributes, ReactChild } from 'react';
+export {
+  CSlider,
+  USlider,
+} from "./inputs/slider"
 
-export interface Props extends HTMLAttributes<HTMLDivElement> {
-  /** custom content, defaults to 'the snozzberries taste like snozzberries' */
-  children?: ReactChild;
-}
+export { RadioGroup } from "./inputs/radio"
 
-// Please do not use types off of a default export module or else Storybook Docs will suffer.
-// see: https://github.com/storybookjs/storybook/issues/9556
-/**
- * A custom Thing component. Neat!
- */
-export const Thing: FC<Props> = ({ children }) => {
-  return <div>{children || `the snozzberries taste like snozzberries`}</div>;
-};
+/* eslint-disable */
+export type {
+  CSliderProps,
+  USliderProps
+} from "./inputs/slider"
 
-export { default as CSlider } from './CSlider';
-export { default as USlider } from './USlider';
+export type { RadioGroupProps } from "./inputs/radio"
+/* eslint-enable */
