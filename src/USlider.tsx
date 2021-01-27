@@ -20,6 +20,7 @@ const USlider = forwardRef<HTMLInputElement, USliderProps>(
       step = 1,
       set,
       defaultValue = 50,
+      children,
       ...otherProps
     },
     ref
@@ -52,6 +53,7 @@ const USlider = forwardRef<HTMLInputElement, USliderProps>(
           ref={ref}
         />
         <label htmlFor={name}>{name}</label>
+        {children}
       </div>
     );
   }

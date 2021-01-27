@@ -11,6 +11,7 @@ const CSlider: FC<CSliderProps> = ({
   step = 1,
   set,
   value = 50,
+  children,
   ...otherProps
 }) => {
   return (
@@ -28,6 +29,7 @@ const CSlider: FC<CSliderProps> = ({
         value={value}
       />
       <label htmlFor={name}>{name}</label>
+      {children}
     </div>
   );
 };
