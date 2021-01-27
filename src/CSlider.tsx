@@ -3,7 +3,7 @@ import React, { FC, HTMLProps } from 'react';
 interface CSliderProps extends HTMLProps<HTMLDivElement> {
   set: (value: string) => void;
 }
-const ControlledSlider: FC<CSliderProps> = ({
+const CSlider: FC<CSliderProps> = ({
   name,
   id = name,
   min = 0,
@@ -32,4 +32,4 @@ const ControlledSlider: FC<CSliderProps> = ({
   );
 };
 
-export default ControlledSlider;
+export default CSlider;
