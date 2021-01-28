@@ -3,6 +3,8 @@ export {
   USlider,
 } from "./inputs/slider"
 
+export { excludes } from "./util"
+
 export { RadioGroup } from "./inputs/radio"
 
 /* eslint-disable */
