@@ -1,5 +1,5 @@
-import React, { FC, forwardRef, HTMLProps, useState } from "react"
 import { paramCase } from "change-case"
+import React, { FC, forwardRef, HTMLProps } from "react"
 
 export const RadioInput = forwardRef<
   HTMLInputElement,
@@ -35,17 +35,18 @@ export interface RadioGroupProps extends HTMLProps<HTMLDivElement> {
     label: string
     value: string
   }[]
-  defaultValue: string
+  value: string
+  setValue: (value: string) => void
   name: string
 }
 
 export const RadioGroup: FC<RadioGroupProps> = ({
   items,
   name,
-  defaultValue,
+  value,
+  setValue,
   ...props
 }) => {
-  const [value, setValue] = useState(defaultValue)
   return (
     <div {...props}>
       {items.map(itemProps => (
