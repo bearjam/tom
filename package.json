@@ -75,6 +75,7 @@
     "@types/change-case": "^2.3.1",
     "change-case": "^4.1.2",
     "immer": "^8.0.1",
+    "rfc6902": "^4.0.1",
     "zustand": "^3.3.1"
   }
 }

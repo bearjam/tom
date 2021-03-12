@@ -1,23 +1,6 @@
-import produce, {
-  applyPatches,
-  Draft,
-  enablePatches,
-  Patch,
-  produceWithPatches,
-} from "immer"
+import produce, { Draft } from "immer"
+import { applyPatch, createPatch, Patch } from "rfc6902"
 import { GetState, SetState, State as StateBase, StoreApi } from "zustand"
-
-enablePatches()
-
-type Patcher = {
-  patches: Patch[][]
-  inversePatches: Patch[][]
-  patchIndex: number
-  undo: () => void
-  redo: () => void
-  canUndo: boolean
-  canRedo: boolean
-}
 
 type ActionBase<T = string> = { type: T; undoable?: boolean }
 
@@ -26,12 +9,22 @@ type Dispatcher<S, A> = {
   dispatch: (a: A) => A
 }
 
-export const reduxUndoable = <
+type Patcher = {
+  patches: Patch[]
+  inversePatches: Patch[]
+  patchIndex: number
+  undo: () => void
+  redo: () => void
+  canUndo: boolean
+  canRedo: boolean
+}
+
+export const undoableReducer = <
   T extends unknown,
   S extends StateBase,
   A extends ActionBase<T>
 >(
-  producer: (draft: Draft<S>, action: A) => void,
+  reducer: (state: S, action: A) => S,
   initialState: S
 ) => (
   set: SetState<Dispatcher<S, A> & Patcher>,
@@ -45,26 +38,27 @@ export const reduxUndoable = <
   api.dispatch = (action: A) => {
     if (typeof action.undoable === "undefined" || action.undoable) {
       set(p => {
-        const [n, patches, inversePatches] = produceWithPatches(
-          p.state,
-          draft => {
-            producer(draft, action)
-          }
-        )
+        const n = reducer(p.state, action)
+        const patch = createPatch(p.state, n)
+        const inversePatch = createPatch(n, p.state)
         return produce(p, draft => {
           draft.state = n as Draft<S>
-          draft.patchIndex += 1
-          draft.patches.push(patches)
-          draft.inversePatches.push(inversePatches)
           draft.patches.splice(draft.patchIndex + 1)
+          draft.patches.push(patch)
           draft.inversePatches.splice(draft.patchIndex + 1)
+          draft.inversePatches.push(inversePatch)
+          draft.patchIndex += 1
           draft.canUndo =
-            typeof draft.inversePatches[draft.patchIndex] !== undefined
-          draft.canRedo = typeof draft.patches[draft.patchIndex] !== undefined
+            typeof draft.inversePatches[draft.patchIndex] !== "undefined"
+          draft.canRedo =
+            typeof draft.patches[draft.patchIndex + 1] !== "undefined"
         })
       })
     } else {
-      set(p => produce(p, draft => producer(draft.state, action)))
+      set(p => ({
+        ...p,
+        state: reducer(p.state, action),
+      }))
     }
     return action
   }
@@ -75,10 +69,7 @@ export const reduxUndoable = <
 
     set(p =>
       produce(p, draft => {
-        draft.state = applyPatches(
-          draft.state,
-          draft.inversePatches[draft.patchIndex]
-        )
+        applyPatch(draft.state, draft.inversePatches[draft.patchIndex])
         draft.patchIndex -= 1
         draft.canUndo =
           typeof draft.inversePatches[draft.patchIndex] !== "undefined"
@@ -93,10 +84,7 @@ export const reduxUndoable = <
     if (!canRedo) return
     set(p =>
       produce(p, draft => {
-        draft.state = applyPatches(
-          draft.state,
-          draft.patches[draft.patchIndex + 1]
-        )
+        applyPatch(draft.state, draft.patches[draft.patchIndex + 1])
         draft.patchIndex += 1
         draft.canRedo =
           typeof draft.patches[draft.patchIndex + 1] !== "undefined"

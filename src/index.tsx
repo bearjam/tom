@@ -16,4 +16,4 @@ export type {
 export type { RadioGroupProps } from "./inputs/radio"
 /* eslint-enable */
 
-export {reduxUndoable } from "./zustand/middleware"
+export { undoableReducer } from "./zustand/middleware"
