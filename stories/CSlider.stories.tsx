@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { Meta, Story } from "@storybook/react"
-import { CSlider, CSliderProps } from "../src"
-import { excludes } from "../src/util"
+import { CSlider, CSliderProps } from "../src/inputs"
 
 const meta: Meta = {
   title: "CSlider",
