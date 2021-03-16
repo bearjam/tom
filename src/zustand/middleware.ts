@@ -27,9 +27,9 @@ export const withReducer = <
   reducer: (state: S, action: A) => S,
   initialState: S
 ) => (
-  set: SetState<Dispatcher<S, A> & Patcher>,
-  _get: GetState<Dispatcher<S, A> & Patcher>,
-  api: StoreApi<Dispatcher<S, A> & Patcher> & {
+  set: SetState<Dispatcher<S, A>>,
+  _get: GetState<Dispatcher<S, A>>,
+  api: StoreApi<Dispatcher<S, A>> & {
     dispatch?: (a: A) => A
     undo?: () => void
     redo?: () => void

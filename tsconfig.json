@@ -2,12 +2,6 @@
   // see https://www.typescriptlang.org/tsconfig to better understand tsconfigs
   "include": ["src", "types"],
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "inputs": ["./src/inputs"],
-      "zustand": ["./src/zustand"],
-      "*": ["src/*", "node_modules/*"]
-    },
     "module": "esnext",
     "lib": ["dom", "esnext"],
     "importHelpers": true,
