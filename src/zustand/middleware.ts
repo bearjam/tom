@@ -19,7 +19,36 @@ type Patcher = {
   canRedo: boolean
 }
 
-export const undoableReducer = <
+export const withReducer = <
+  T extends unknown,
+  S extends StateBase,
+  A extends ActionBase<T>
+>(
+  reducer: (state: S, action: A) => S,
+  initialState: S
+) => (
+  set: SetState<Dispatcher<S, A> & Patcher>,
+  _get: GetState<Dispatcher<S, A> & Patcher>,
+  api: StoreApi<Dispatcher<S, A> & Patcher> & {
+    dispatch?: (a: A) => A
+    undo?: () => void
+    redo?: () => void
+  }
+): Dispatcher<S, A> => {
+  api.dispatch = (action: A) => {
+    set(p => ({
+      ...p,
+      state: reducer(p.state, action),
+    }))
+    return action
+  }
+  return {
+    state: initialState,
+    dispatch: api.dispatch,
+  }
+}
+
+export const withUndoableReducer = <
   T extends unknown,
   S extends StateBase,
   A extends ActionBase<T>
