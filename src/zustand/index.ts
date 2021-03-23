@@ -1,1 +1,6 @@
-export { withUndoableReducer, withReducer } from "./middleware"
+export {
+  withUndoableReducer,
+  withReducer,
+  Dispatcher,
+  Patcher,
+} from "./middleware"

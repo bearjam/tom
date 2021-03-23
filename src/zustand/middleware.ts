@@ -4,12 +4,12 @@ import { GetState, SetState, State as StateBase, StoreApi } from "zustand"
 
 type ActionBase<T = string> = { type: T; undoable?: boolean }
 
-type Dispatcher<S, A> = {
+export type Dispatcher<S, A> = {
   state: S
   dispatch: (a: A) => A
 }
 
-type Patcher = {
+export type Patcher = {
   patches: Patch[]
   inversePatches: Patch[]
   patchIndex: number
