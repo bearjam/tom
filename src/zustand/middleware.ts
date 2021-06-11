@@ -65,7 +65,7 @@ export const withUndoableReducer = <
   }
 ): Dispatcher<S, A> & Patcher => {
   api.dispatch = (action: A) => {
-    if (typeof action.undoable === "undefined" || action.undoable) {
+    if (action.undoable) {
       set(p => {
         const n = reducer(p.state, action)
         const patch = createPatch(p.state, n)
