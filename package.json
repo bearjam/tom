@@ -37,14 +37,14 @@
   },
   "name": "@bearjam/tom",
   "author": "Thomas O'Neill",
-  "module": "dist/lib-mysterybear.esm.js",
+  "module": "dist/tom.esm.js",
   "size-limit": [
     {
-      "path": "dist/lib-mysterybear.cjs.production.min.js",
+      "path": "dist/tom.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/lib-mysterybear.esm.js",
+      "path": "dist/tom.esm.js",
       "limit": "10 KB"
     }
   ],
